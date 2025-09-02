@@ -1,10 +1,15 @@
 package com.example.flagquiz
 
 import android.os.Bundle
+import android.view.View
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 
 class TelaQuiz : AppCompatActivity() {
 
@@ -22,7 +27,22 @@ class TelaQuiz : AppCompatActivity() {
         R.drawable.flag_polonia,
         R.drawable.flag_vaticano
     )
+    val nomesBandeiras = listOf(
+        "cairo",
+        "india",
+        "japao",
+        "nepal",
+        "brasil",
+        "bangladesh",
+        "colombia",
+        "equador",
+        "jamaica",
+        "franca",
+        "polonia",
+        "vaticano"
+    )
 
+    var numeroSeletor = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -32,9 +52,29 @@ class TelaQuiz : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
 
+    fun novaImagem(view: View) {
+        val imgFlag: ImageView = findViewById<ImageView>(R.id.imageView)
 
+        numeroSeletor = (0..11).random()
 
+        val randomFlag = flags.get(numeroSeletor)
+        imgFlag.setImageResource(randomFlag)
+    }
 
+    fun acertarErrar(view: View){
+        val certoErradoText: TextView = findViewById<TextView>(R.id.textViewCertoErrado)
+        val editTextNomeBandeira: TextView = findViewById<EditText>(R.id.editTextNomeBandeira)
+        val resposta = editTextNomeBandeira.toString().trim().lowercase()
+
+        if (resposta == nomesBandeiras.get(numeroSeletor)){
+            certoErradoText.setText("ACERTOU")
+        } else {
+            certoErradoText.setText("ERROU")
+        }
+
+        novaImagem(view)
     }
 }
+
