@@ -1,10 +1,12 @@
 package com.example.flagquiz
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -27,6 +29,9 @@ class TelaQuiz : AppCompatActivity() {
         R.drawable.flag_polonia,
         R.drawable.flag_vaticano
     )
+    val listaRespostas: ArrayList<String> = ArrayList()
+
+    val bandeirasJaforam: ArrayList<Int> = ArrayList()
     val nomesBandeiras = listOf(
         "cairo",
         "india",
@@ -43,6 +48,8 @@ class TelaQuiz : AppCompatActivity() {
     )
 
     var numeroSeletor = 0
+    var pontuacao = 0
+    var jogadas = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -52,29 +59,67 @@ class TelaQuiz : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val imgFlag: ImageView = findViewById<ImageView>(R.id.imageView)
+
+        numeroSeletor = (0..flags.size).random()
+
+        val randomFlag = flags.get(numeroSeletor)
+        imgFlag.setImageResource(randomFlag)
+
+
+        val rodadaText: TextView = findViewById<TextView>(R.id.textViewRodada)
+        rodadaText.setText("%d de 5".format(jogadas))
+
+        bandeirasJaforam.add(numeroSeletor)
+
     }
 
     fun novaImagem(view: View) {
         val imgFlag: ImageView = findViewById<ImageView>(R.id.imageView)
 
-        numeroSeletor = (0..11).random()
 
-        val randomFlag = flags.get(numeroSeletor)
-        imgFlag.setImageResource(randomFlag)
+            while (bandeirasJaforam.contains(numeroSeletor)) {
+                numeroSeletor = (0..flags.size).random()
+            }
+
+            val randomFlag = flags.get(numeroSeletor)
+            imgFlag.setImageResource(randomFlag)
+
     }
 
-    fun acertarErrar(view: View){
+    fun acertarErrar(view: View) {
         val certoErradoText: TextView = findViewById<TextView>(R.id.textViewCertoErrado)
         val editTextNomeBandeira: TextView = findViewById<EditText>(R.id.editTextNomeBandeira)
-        val resposta = editTextNomeBandeira.toString().trim().lowercase()
+        val resposta = editTextNomeBandeira.text.toString().lowercase().trim()
 
-        if (resposta == nomesBandeiras.get(numeroSeletor)){
-            certoErradoText.setText("ACERTOU")
+        // LÓGICA DE SE ACERTOU OU ERROU
+
+        if (resposta == nomesBandeiras.get(numeroSeletor)) {
+            Toast.makeText(this, "ACERTOU", Toast.LENGTH_SHORT).show()
+            pontuacao += 20
+            listaRespostas.add("Questão $jogadas: ACERTOU -- R: ${nomesBandeiras.get(numeroSeletor)}")
         } else {
-            certoErradoText.setText("ERROU")
+            Toast.makeText(this, "ERROU", Toast.LENGTH_SHORT).show()
+            listaRespostas.add("Questão $jogadas: ERROU -- Era: ${nomesBandeiras.get(numeroSeletor)}, você respondeu: ${resposta}")
+
         }
 
-        novaImagem(view)
+        // ADICIONAR QUE JÁ FOI
+        bandeirasJaforam.add(numeroSeletor)
+
+        // LÓGICA DE ENCERRAR OU IR PARA PRÓXIMA RODADA
+
+        if (jogadas >= 5) {
+            val intent = Intent(this, TelaResultado::class.java);
+            startActivity(intent)
+        } else {
+            novaImagem(view)
+            jogadas++
+            val rodadaText: TextView = findViewById<TextView>(R.id.textViewRodada)
+            rodadaText.setText("%d de 5".format(jogadas))
+        }
     }
 }
+
 
