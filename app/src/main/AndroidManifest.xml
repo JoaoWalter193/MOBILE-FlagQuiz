@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FlagQuiz">
         <activity
+            android:name=".TelaResultado"
+            android:exported="false" />
+        <activity
+            android:name=".TelaQuiz"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
