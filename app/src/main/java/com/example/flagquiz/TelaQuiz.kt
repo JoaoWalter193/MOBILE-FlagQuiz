@@ -16,7 +16,7 @@ import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 class TelaQuiz : AppCompatActivity() {
 
     val flags = listOf(
-        R.drawable.flag_cairo,
+        R.drawable.flag_russia,
         R.drawable.flag_india,
         R.drawable.flag_japao,
         R.drawable.flag_nepal,
@@ -33,7 +33,7 @@ class TelaQuiz : AppCompatActivity() {
 
     val bandeirasJaforam: ArrayList<Int> = ArrayList()
     val nomesBandeiras = listOf(
-        "cairo",
+        "russia",
         "india",
         "japao",
         "nepal",

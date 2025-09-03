@@ -31,8 +31,12 @@ class TelaResultado : AppCompatActivity() {
             val listaRecebida = bundle.getStringArrayList("listaRespostas");
             println("LOG PONTUACAO1: $pontuacaoRecebida");
             println("LOG LISAA1: $listaRecebida");
+
+            // A forma recomendada e mais eficiente
+            val textoFormatado = listaRecebida?.joinToString(separator = "\n")
+            textViewLista.text = "Respostas: \n$textoFormatado"
+
             textViewPontuacao.text = "Resultado: $pontuacaoRecebida";
-            textViewLista.text = "Respostas: $listaRecebida";
         }
     }
 }
