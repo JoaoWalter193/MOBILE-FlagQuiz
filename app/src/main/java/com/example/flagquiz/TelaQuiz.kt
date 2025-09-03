@@ -16,7 +16,9 @@ import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 class TelaQuiz : AppCompatActivity() {
 
     val flags = listOf(
-        R.drawable.flag_russia,
+        R.drawable.flag_butao,
+        R.drawable.flag_angola,
+        R.drawable.flag_albania,
         R.drawable.flag_india,
         R.drawable.flag_japao,
         R.drawable.flag_nepal,
@@ -33,7 +35,9 @@ class TelaQuiz : AppCompatActivity() {
 
     val bandeirasJaforam: ArrayList<Int> = ArrayList()
     val nomesBandeiras = listOf(
-        "russia",
+        "butao",
+        "angola",
+        "albania",
         "india",
         "japao",
         "nepal",
@@ -62,7 +66,7 @@ class TelaQuiz : AppCompatActivity() {
 
         val imgFlag: ImageView = findViewById<ImageView>(R.id.imageView)
 
-        numeroSeletor = (0..flags.size).random()
+        numeroSeletor = (0..flags.size-1).random()
 
         val randomFlag = flags.get(numeroSeletor)
         imgFlag.setImageResource(randomFlag)
@@ -80,7 +84,7 @@ class TelaQuiz : AppCompatActivity() {
 
 
             while (bandeirasJaforam.contains(numeroSeletor)) {
-                numeroSeletor = (0..flags.size).random()
+                numeroSeletor = (0..flags.size-1).random()
             }
 
             val randomFlag = flags.get(numeroSeletor)
@@ -89,7 +93,6 @@ class TelaQuiz : AppCompatActivity() {
     }
 
     fun acertarErrar(view: View) {
-        val certoErradoText: TextView = findViewById<TextView>(R.id.textViewCertoErrado)
         val editTextNomeBandeira: TextView = findViewById<EditText>(R.id.editTextNomeBandeira)
         val resposta = editTextNomeBandeira.text.toString().lowercase().trim()
 
@@ -101,22 +104,20 @@ class TelaQuiz : AppCompatActivity() {
             listaRespostas.add("Questão $jogadas: ACERTOU -- R: ${nomesBandeiras.get(numeroSeletor)}")
         } else {
             Toast.makeText(this, "ERROU", Toast.LENGTH_SHORT).show()
-            listaRespostas.add("Questão $jogadas: ERROU -- Era: ${nomesBandeiras.get(numeroSeletor)}, você respondeu: ${resposta}")
+            listaRespostas.add("Questão $jogadas: ERROU\nEra: ${nomesBandeiras.get(numeroSeletor)}\nVocê respondeu: ${resposta}")
 
         }
 
-        // ADICIONAR QUE JÁ FOI
+        editTextNomeBandeira.setText("")
+
         bandeirasJaforam.add(numeroSeletor)
 
-        // LÓGICA DE ENCERRAR OU IR PARA PRÓXIMA RODADA
-
         if (jogadas >= 5) {
-            println("LOG PONTUACAO: $pontuacao")
-            println("LOG LISTA: $listaRespostas")
             val intent = Intent(this, TelaResultado::class.java);
             intent.putExtra("pontuacao", pontuacao)
             intent.putExtra("listaRespostas", listaRespostas)
             startActivity(intent)
+            finish()
         } else {
             novaImagem(view)
             jogadas++

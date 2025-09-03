@@ -1,6 +1,8 @@
 package com.example.flagquiz
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -23,20 +25,26 @@ class TelaResultado : AppCompatActivity() {
         val textViewLista = findViewById<TextView>(R.id.textViewLista);
 
         val dado: String? = NomeUsuario.getInstance().getDado();
-        textViewNome.text = "Nome usuário: $dado"
+        textViewNome.text = "$dado"
 
         val bundle = intent.extras;
         if (bundle != null) {
             val pontuacaoRecebida = bundle.getInt("pontuacao");
             val listaRecebida = bundle.getStringArrayList("listaRespostas");
-            println("LOG PONTUACAO1: $pontuacaoRecebida");
-            println("LOG LISAA1: $listaRecebida");
 
             // A forma recomendada e mais eficiente
-            val textoFormatado = listaRecebida?.joinToString(separator = "\n")
-            textViewLista.text = "Respostas: \n$textoFormatado"
+            val textoFormatado = listaRecebida?.joinToString(separator = "\n---------------------\n")
+            textViewLista.text = "$textoFormatado"
 
-            textViewPontuacao.text = "Resultado: $pontuacaoRecebida";
+            textViewPontuacao.text = "$pontuacaoRecebida";
         }
+    }
+
+    fun reset(view: View) {
+        val intent = Intent(this, MainActivity::class.java);
+
+        startActivity(intent)
+
+        finish()
     }
 }

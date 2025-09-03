@@ -41,5 +41,6 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, TelaQuiz::class.java);
 
         startActivity(intent)
+        finish()
     }
 }
