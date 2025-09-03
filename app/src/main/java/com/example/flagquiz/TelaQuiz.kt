@@ -111,7 +111,11 @@ class TelaQuiz : AppCompatActivity() {
         // LÓGICA DE ENCERRAR OU IR PARA PRÓXIMA RODADA
 
         if (jogadas >= 5) {
+            println("LOG PONTUACAO: $pontuacao")
+            println("LOG LISTA: $listaRespostas")
             val intent = Intent(this, TelaResultado::class.java);
+            intent.putExtra("pontuacao", pontuacao)
+            intent.putExtra("listaRespostas", listaRespostas)
             startActivity(intent)
         } else {
             novaImagem(view)
